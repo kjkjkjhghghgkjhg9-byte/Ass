@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#635BFF">
+<title>StudyHub | منصة الطالب</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --primary:#635bff;
+  --primary2:#8b5cf6;
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#171923;
+  --muted:#7b8191;
+  --border:#e7e9f0;
+  --success:#19b66b;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --shadow:0 12px 35px rgba(28,32,60,.08);
+  --radius:22px;
+}
+
+body.dark{
+  --bg:#0f1420;
+  --card:#171e2d;
+  --text:#f4f6fb;
+  --muted:#9aa4b7;
+  --border:#293246;
+  --shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+body{
+  font-family:Tahoma,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  transition:.25s;
+}
+
+button,input,textarea,select{font:inherit}
+
+button{cursor:pointer;border:0}
+
+input,textarea,select{
+  width:100%;
+  padding:13px 15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  outline:none;
+  background:var(--card);
+  color:var(--text);
+}
+
+textarea{resize:vertical;min-height:120px}
+
+button.primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;
+}
+
+button.secondary{
+  background:#eef0ff;
+  color:var(--primary);
+}
+
+button.danger{
+  background:#ffebee;
+  color:var(--danger);
+}
+
+#login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 20% 20%,#ffffff35,transparent 30%),
+    linear-gradient(135deg,#635bff,#8b5cf6);
+}
+
+.login-card{
+  width:min(450px,100%);
+  background:white;
+  padding:32px;
+  border-radius:30px;
+  box-shadow:0 30px 80px #0004;
+  text-align:center;
+}
+
+.brand-icon{
+  width:82px;
+  height:82px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:25px;
+  background:#eef0ff;
+  font-size:40px;
+}
+
+.login-card h1{
+  margin:18px 0 8px;
+  color:#635bff;
+}
+
+.login-card p{
+  color:#777;
+  line-height:1.7;
+  margin-bottom:20px;
+}
+
+.form-group{
+  text-align:right;
+  margin-top:11px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:6px;
+  color:#555;
+  font-size:14px;
+}
+
+.login-card button{
+  width:100%;
+  margin-top:14px;
+  padding:14px;
+  border-radius:14px;
+}
+
+#app{display:none}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  background:color-mix(in srgb,var(--card) 92%,transparent);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+
+.logo{
+  font-size:21px;
+  font-weight:900;
+  color:var(--primary);
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.icon-btn{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:var(--bg);
+  color:var(--text);
+  font-size:19px;
+}
+
+.avatar{
+  width:43px;
+  height:43px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;
+  font-weight:bold;
+}
+
+.layout{
+  display:flex;
+  min-height:calc(100vh - 70px);
+}
+
+.sidebar{
+  width:245px;
+  position:sticky;
+  top:70px;
+  height:calc(100vh - 70px);
+  padding:20px 14px;
+  background:var(--card);
+  border-left:1px solid var(--border);
+}
+
+.sidebar-title{
+  color:var(--muted);
+  font-size:12px;
+  margin:10px 10px;
+}
+
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  margin-bottom:5px;
+  border-radius:14px;
+  background:transparent;
+  color:var(--muted);
+  text-align:right;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:#eef0ff;
+  color:var(--primary);
+  font-weight:bold;
+}
+
+.main{
+  flex:1;
+  min-width:0;
+}
+
+.page{
+  display:none;
+  max-width:1250px;
+  margin:auto;
+  padding:25px;
+}
+
+.page.active{display:block}
+
+.page-title{
+  margin-bottom:20px;
+}
+
+.page-title h1{
+  font-size:28px;
+  margin-bottom:7px;
+}
+
+.page-title p{
+  color:var(--muted);
+}
+
+.hero{
+  min-height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:30px;
+  border-radius:30px;
+  color:white;
+  background:
+    radial-gradient(circle at 85% 20%,#ffffff25,transparent 25%),
+    linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.hero h1{
+  font-size:31px;
+  margin:10px 0;
+}
+
+.hero p{opacity:.9}
+
+.hero-art{
+  font-size:95px;
+  opacity:.3;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.stats{
+  grid-template-columns:repeat(4,1fr);
+  margin:18px 0;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.stat-card{
+  padding:20px;
+}
+
+.stat-icon{
+  font-size:25px;
+}
+
+.stat-value{
+  font-size:27px;
+  font-weight:bold;
+  margin:9px 0 4px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.dashboard-grid{
+  grid-template-columns:1.4fr 1fr;
+}
+
+.section-card{
+  padding:20px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.section-head h2{
+  font-size:19px;
+}
+
+.link-btn{
+  color:var(--primary);
+  background:none;
+}
+
+.quote{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.quote-icon{
+  width:55px;
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:17px;
+  background:#fff3cf;
+  font-size:25px;
+}
+
+.quote p{
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.progress{
+  height:10px;
+  background:var(--bg);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--primary),var(--primary2));
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.quick{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.quick-card{
+  padding:20px;
+  text-align:right;
+  transition:.2s;
+}
+
+.quick-card:hover{
+  transform:translateY(-3px);
+}
+
+.quick-card .emoji{
+  font-size:31px;
+  margin-bottom:12px;
+}
+
+.quick-card p{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+.filters{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:10px;
+  margin-bottom:17px;
+}
+
+.book-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.book-card{
+  overflow:hidden;
+}
+
+.book-cover{
+  height:180px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:60px;
+  background:linear-gradient(135deg,#e8eaff,#f1eaff);
+}
+
+.book-content{
+  padding:17px;
+}
+
+.book-content h3{
+  margin-bottom:7px;
+}
+
+.book-meta{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.book-actions{
+  display:flex;
+  gap:7px;
+  margin-top:13px;
+}
+
+.book-actions button{
+  flex:1;
+  padding:10px;
+  border-radius:11px;
+}
+
+.favorite{
+  width:45px!important;
+  flex:0!important;
+}
+
+.timer-card{
+  max-width:650px;
+  margin:auto;
+  padding:28px;
+  text-align:center;
+}
+
+.timer-circle{
+  width:260px;
+  height:260px;
+  margin:25px auto;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle,var(--card) 67%,transparent 68%),
+    conic-gradient(var(--primary) 0deg,#e6e8ef 0deg);
+}
+
+.timer-display{
+  font-size:46px;
+  font-weight:bold;
+  direction:ltr;
+}
+
+.timer-settings{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.timer-actions{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.timer-actions button{
+  padding:12px 18px;
+  border-radius:12px;
+}
+
+.tasks{
+  display:grid;
+  gap:9px;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:14px;
+}
+
+.task input{
+  width:auto;
+}
+
+.task-text{
+  flex:1;
+}
+
+.task.done .task-text{
+  text-decoration:line-through;
+  opacity:.5;
+}
+
+.task-date{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.notes-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.note{
+  padding:18px;
+}
+
+.schedule{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+}
+
+.day{
+  min-height:130px;
+  padding:10px;
+  border-radius:15px;
+  background:var(--bg);
+}
+
+.day strong{
+  display:block;
+  margin-bottom:9px;
+}
+
+.event{
+  padding:8px;
+  margin-top:6px;
+  border-radius:9px;
+  background:#e9eaff;
+  color:var(--primary);
+  font-size:11px;
+}
+
+.profile{
+  max-width:650px;
+  margin:auto;
+  padding:25px;
+}
+
+.profile-head{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.big-avatar{
+  width:90px;
+  height:90px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:28px;
+  color:white;
+  font-size:34px;
+  font-weight:bold;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.settings-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:17px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.switch{
+  width:50px;
+  height:28px;
+  border-radius:20px;
+  background:#ddd;
+  padding:3px;
+}
+
+.switch span{
+  display:block;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:white;
+  transition:.2s;
+}
+
+.switch.on{
+  background:var(--primary);
+}
+
+.switch.on span{
+  transform:translateX(-22px);
+}
+
+.bottom-nav{
+  display:none;
+}
+
+.toast{
+  position:fixed;
+  left:20px;
+  bottom:25px;
+  z-index:500;
+  max-width:330px;
+  padding:14px 18px;
+  color:white;
+  background:#181b27;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  transform:translateY(100px);
+  opacity:0;
+  transition:.25s;
+}
+
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:400;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#0008;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:min(550px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:23px;
+  background:var(--card);
+  border-radius:24px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.close{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.form-actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.form-actions button{
+  flex:1;
+  padding:12px;
+  border-radius:12px;
+}
+
+.empty{
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+}
+
+@media(max-width:1000px){
+  .sidebar{width:205px}
+  .book-grid{grid-template-columns:repeat(2,1fr)}
+  .quick{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:750px){
+  .sidebar{display:none}
+
+  .topbar{padding:0 15px}
+
+  .page{padding:17px}
+
+  .hero{padding:22px}
+  .hero h1{font-size:24px}
+  .hero-art{font-size:65px}
+
+  .dashboard-grid,
+  .notes-grid{
+    grid-template-columns:1fr;
+  }
+
+  .book-grid{
+    grid-template-columns:1fr;
+  }
+
+  .filters{
+    grid-template-columns:1fr;
+  }
+
+  .schedule{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .bottom-nav{
+    position:fixed;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:200;
+    display:flex;
+    background:var(--card);
+    border-top:1px solid var(--border);
+  }
+
+  .bottom-nav button{
+    flex:1;
+    padding:9px 2px;
+    color:var(--muted);
+    background:transparent;
+    font-size:18px;
+  }
+
+  .bottom-nav small{
+    display:block;
+    font-size:9px;
+    margin-top:3px;
+  }
+
+  .bottom-nav button.active{
+    color:var(--primary);
+  }
+
+  #app{padding-bottom:65px}
+}
+
+@media(max-width:430px){
+  .stats{gap:8px}
+  .stat-card{padding:14px}
+  .stat-value{font-size:22px}
+  .quick{gap:9px}
+  .timer-circle{width:225px;height:225px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<section id="login">
+
+  <div class="login-card">
+
+    <div class="brand-icon">🎓</div>
+
+    <h1>StudyHub</h1>
+
+    <p>
+      منصتك الذكية للمذاكرة والتنظيم وتحقيق أهدافك.
+    </p>
+
+    <div class="form-group">
+      <label>الاسم</label>
+      <input id="loginName" placeholder="اكتب اسمك">
+    </div>
+
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input id="loginEmail" type="email"
+             placeholder="example@gmail.com"
+             dir="ltr">
+    </div>
+
+    <div class="form-group">
+      <label>النظام الدراسي</label>
+      <select id="loginSystem">
+        <option value="">اختر النظام</option>
+        <option>الثانوية العامة</option>
+        <option>البكالوريا المصرية</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>الصف</label>
+      <select id="loginGrade">
+        <option value="">اختر الصف</option>
+        <option>الصف الأول</option>
+        <option>الصف الثاني</option>
+        <option>الصف الثالث</option>
+      </select>
+    </div>
+
+    <button class="primary" onclick="login()">
+      دخول إلى StudyHub 🚀
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+
+<header class="topbar">
+
+  <div class="logo">📚 StudyHub</div>
+
+  <div class="top-actions">
+    <button class="icon-btn" onclick="showNotifications()">🔔</button>
+    <div class="avatar" id="topAvatar">A</div>
+  </div>
+
+</header>
+
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+  <div class="sidebar-title">الرئيسية</div>
+
+  <button class="nav-btn active" onclick="navigate('home',this)">
+    🏠 <span>لوحة التحكم</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('library',this)">
+    📚 <span>المكتبة</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('focus',this)">
+    ⏱️ <span>جلسة التركيز</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('tasks',this)">
+    ✅ <span>المهام</span>
+  </button>
+
+  <div class="sidebar-title">التنظيم</div>
+
+  <button class="nav-btn" onclick="navigate('notes',this)">
+    📝 <span>ملاحظاتي</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('schedule',this)">
+    📅 <span>الجدول</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('stats',this)">
+    📊 <span>الإحصائيات</span>
+  </button>
+
+  <div class="sidebar-title">الحساب</div>
+
+  <button class="nav-btn" onclick="navigate('profile',this)">
+    👤 <span>حسابي</span>
+  </button>
+
+  <button class="nav-btn" onclick="navigate('settings',this)">
+    ⚙️ <span>الإعدادات</span>
+  </button>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+  <div class="hero">
+
+    <div>
+      <span>أهلاً بك 👋</span>
+      <h1 id="welcomeName">طالب StudyHub</h1>
+      <p>
+        كل يوم جديد هو فرصة جديدة للتعلم والتقدم.
+      </p>
+    </div>
+
+    <div class="hero-art">🎓</div>
+
+  </div>
+
+
+  <div class="grid stats">
+
+    <div class="card stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-value" id="statBooks">0</div>
+      <div class="stat-label">كتاب متاح</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" id="statTasks">0</div>
+      <div class="stat-label">مهمة مكتملة</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-value" id="statMinutes">0</div>
+      <div class="stat-label">دقيقة مذاكرة</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-value" id="statXP">0</div>
+      <div class="stat-label">نقاط XP</div>
+    </div>
+
+  </div>
+
+
+  <div class="grid dashboard-grid">
+
+    <div class="card section-card">
+
+      <div class="section-head">
+        <h2>🎯 هدف اليوم</h2>
+        <button class="link-btn" onclick="editGoal()">
+          تعديل
+        </button>
+      </div>
+
+      <div class="progress-info">
+        <span id="goalText">ذاكر لمدة 60 دقيقة</span>
+        <strong id="goalPercent">0%</strong>
+      </div>
+
+      <div class="progress">
+        <span id="goalProgress" style="width:0%"></span>
+      </div>
+
+    </div>
+
+
+    <div class="card section-card">
+
+      <div class="quote">
+
+        <div class="quote-icon">💡</div>
+
+        <div>
+          <strong>رسالة اليوم</strong>
+          <p id="dailyQuote"></p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div style="height:18px"></div>
+
+
+  <div class="grid quick">
+
+    <button class="card quick-card"
+            onclick="navigateById('library')">
+      <div class="emoji">📚</div>
+      <strong>المكتبة</strong>
+      <p>الكتب والمصادر التعليمية</p>
+    </button>
+
+    <button class="card quick-card"
+            onclick="navigateById('focus')">
+      <div class="emoji">⏱️</div>
+      <strong>ابدأ المذاكرة</strong>
+      <p>حدد وقتك وابدأ جلسة تركيز</p>
+    </button>
+
+    <button class="card quick-card"
+            onclick="navigateById('tasks')">
+      <div class="emoji">📝</div>
+      <strong>مهامي</strong>
+      <p>نظم ما تريد إنجازه</p>
+    </button>
+
+    <button class="card quick-card"
+            onclick="navigateById('notes')">
+      <div class="emoji">📒</div>
+      <strong>ملاحظاتي</strong>
+      <p>اكتب واحفظ أفكارك</p>
+    </button>
+
+  </div>
+
+
+  <div style="height:18px"></div>
+
+
+  <div class="card section-card">
+
+    <div class="section-head">
+      <h2>🕘 آخر الكتب</h2>
+      <button class="link-btn"
+              onclick="navigateById('library')">
+        عرض الكل
+      </button>
+    </div>
+
+    <div id="recentBooks"></div>
+
+  </div>
+
+</section>
+
+
+<!-- LIBRARY -->
+
+<section id="library" class="page">
+
+  <div class="page-title">
+    <h1>📚 المكتبة</h1>
+    <p>ابحث عن الكتاب الذي تريد مذاكرته.</p>
+  </div>
+
+  <div class="filters">
+
+    <input id="bookSearch"
+           placeholder="🔎 ابحث عن كتاب أو مادة..."
+           oninput="renderBooks()">
+
+    <select id="bookSystem"
+            onchange="renderBooks()">
+      <option value="">كل الأنظمة</option>
+      <option>الثانوية العامة</option>
+      <option>البكالوريا المصرية</option>
+    </select>
+
+    <select id="bookSubject"
+            onchange="renderBooks()">
+      <option value="">كل المواد</option>
+      <option>رياضيات</option>
+      <option>فيزياء</option>
+      <option>كيمياء</option>
+      <option>لغة عربية</option>
+      <option>لغة إنجليزية</option>
+      <option>أحياء</option>
+    </select>
+
+  </div>
+
+  <div id="bookGrid" class="book-grid"></div>
+
+</section>
+
+
+<!-- FOCUS -->
+
+<section id="focus" class="page">
+
+  <div class="page-title">
+    <h1>⏱️ جلسة التركيز</h1>
+    <p>أنت تحدد المدة التي تريدها.</p>
+  </div>
+
+  <div class="card timer-card">
+
+    <div class="timer-settings">
+
+      <div>
+        <label>الدقائق</label>
+        <input id="timerMinutes"
+               type="number"
+               min="1"
+               value="25"
+               onchange="resetTimer()">
+      </div>
+
+      <div>
+        <label>المادة</label>
+        <input id="timerSubject"
+               placeholder="مثلاً رياضيات">
+      </div>
+
+    </div>
+
+    <div class="timer-circle" id="timerCircle">
+
+      <div class="timer-display"
+           id="timerDisplay">
+        25:00
+      </div>
+
+    </div>
+
+    <div class="timer-actions">
+
+      <button class="primary"
+              onclick="startTimer()">
+        ▶ تشغيل
+      </button>
+
+      <button class="secondary"
+              onclick="pauseTimer()">
+        ⏸ إيقاف
+      </button>
+
+      <button class="secondary"
+              onclick="resetTimer()">
+        🔄 إعادة
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- TASKS -->
+
+<section id="tasks" class="page">
+
+  <div class="page-title">
+    <h1>✅ المهام</h1>
+    <p>حول يومك إلى خطوات صغيرة قابلة للإنجاز.</p>
+  </div>
+
+  <div class="card section-card">
+
+    <div style="display:flex;gap:8px;margin-bottom:15px">
+
+      <input id="taskInput"
+             placeholder="مثلاً: مذاكرة الوحدة الأولى"
+             onkeydown="if(event.key==='Enter')addTask()">
+
+      <button class="primary"
+              style="padding:0 20px;border-radius:13px"
+              onclick="addTask()">
+        إضافة
+      </button>
+
+    </div>
+
+    <div id="taskList" class="tasks"></div>
+
+  </div>
+
+</section>
+
+
+<!-- NOTES -->
+
+<section id="notes" class="page">
+
+  <div class="page-title">
+    <h1>📝 ملاحظاتي</h1>
+    <p>كل ملاحظاتك محفوظة على جهازك.</p>
+  </div>
+
+  <div class="notes-grid">
+
+    <div class="card note">
+
+      <div class="section-head">
+        <h2>📒 ملاحظاتي</h2>
+        <button class="primary"
+                style="padding:9px 14px;border-radius:10px"
+                onclick="saveNotes()">
+          حفظ
+        </button>
+      </div>
+
+      <textarea id="notesText"
+                placeholder="اكتب ملاحظاتك هنا..."></textarea>
+
+    </div>
+
+
+    <div class="card note">
+
+      <h2 style="margin-bottom:15px">💡 نصيحة</h2>
+
+      <p style="color:var(--muted);line-height:2">
+        حاول أن تجعل ملاحظاتك مختصرة ومنظمة.
+        استخدم العناوين والنقاط حتى تستطيع مراجعتها
+        بسرعة قبل الاختبار.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SCHEDULE -->
+
+<section id="schedule" class="page">
+
+  <div class="page-title">
+    <h1>📅 جدول المذاكرة</h1>
+    <p>خطط لأسبوعك الدراسي.</p>
+  </div>
+
+  <div class="card section-card">
+
+    <div class="schedule">
+
+      <div class="day">
+        <strong>السبت</strong>
+        <div class="event">رياضيات<br>5:00 م</div>
+      </div>
+
+      <div class="day">
+        <strong>الأحد</strong>
+        <div class="event">فيزياء<br>5:00 م</div>
+      </div>
+
+      <div class="day">
+        <strong>الإثنين</strong>
+        <div class="event">كيمياء<br>6:00 م</div>
+      </div>
+
+      <div class="day">
+        <strong>الثلاثاء</strong>
+      </div>
+
+      <div class="day">
+        <strong>الأربعاء</strong>
+        <div class="event">لغة عربية<br>5:00 م</div>
+      </div>
+
+      <div class="day">
+        <strong>الخميس</strong>
+        <div class="event">مراجعة<br>7:00 م</div>
+      </div>
+
+      <div class="day">
+        <strong>الجمعة</strong>
+        <div class="event">راحة 🌿</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section id="stats" class="page">
+
+  <div class="page-title">
+    <h1>📊 الإحصائيات</h1>
+    <p>تابع تقدمك في المذاكرة.</p>
+  </div>
+
+  <div class="grid stats">
+
+    <div class="card stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-value" id="fullMinutes">0</div>
+      <div class="stat-label">إجمالي الدقائق</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" id="fullTasks">0</div>
+      <div class="stat-label">المهام المكتملة</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-value" id="fullXP">0</div>
+      <div class="stat-label">XP</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value" id="streak">0</div>
+      <div class="stat-label">أيام متتالية</div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+
+  <div class="page-title">
+    <h1>👤 حسابي</h1>
+    <p>بياناتك الشخصية داخل StudyHub.</p>
+  </div>
+
+  <div class="card profile">
+
+    <div class="profile-head">
+
+      <div class="big-avatar" id="profileAvatar">
+        A
+      </div>
+
+      <h2 id="profileName"
+          style="margin-top:12px">
+        الطالب
+      </h2>
+
+      <p id="profileEmail"
+         style="color:var(--muted);margin-top:5px">
+        -
+      </p>
+
+    </div>
+
+    <div class="info-row">
+      <span>النظام الدراسي</span>
+      <strong id="profileSystem">-</strong>
+    </div>
+
+    <div class="info-row">
+      <span>الصف</span>
+      <strong id="profileGrade">-</strong>
+    </div>
+
+    <div class="info-row">
+      <span>النقاط</span>
+      <strong id="profileXP">0 XP</strong>
+    </div>
+
+    <button class="secondary"
+            style="width:100%;padding:13px;border-radius:12px;margin-top:15px"
+            onclick="logout()">
+      تسجيل الخروج
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+  <div class="page-title">
+    <h1>⚙️ الإعدادات</h1>
+    <p>خصص التطبيق بالطريقة التي تناسبك.</p>
+  </div>
+
+  <div class="card section-card">
+
+    <div class="settings-row">
+      <div>
+        <strong>الوضع الليلي</strong>
+        <p style="color:var(--muted);font-size:12px;margin-top:4px">
+          مريح للعين في المساء
+        </p>
+      </div>
+
+      <button id="darkSwitch"
+              class="switch"
+              onclick="toggleDark()">
+        <span></span>
+      </button>
+    </div>
+
+
+    <div class="settings-row">
+      <div>
+        <strong>مسح البيانات المحلية</strong>
+        <p style="color:var(--muted);font-size:12px;margin-top:4px">
+          حذف المهام والملاحظات والإحصائيات
+        </p>
+      </div>
+
+      <button class="danger"
+              style="padding:9px 13px;border-radius:10px"
+              onclick="clearData()">
+        مسح
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="bottom-nav">
+
+  <button class="active"
+          onclick="navigateById('home')">
+    🏠
+    <small>الرئيسية</small>
+  </button>
+
+  <button onclick="navigateById('library')">
+    📚
+    <small>المكتبة</small>
+  </button>
+
+  <button onclick="navigateById('focus')">
+    ⏱️
+    <small>التركيز</small>
+  </button>
+
+  <button onclick="navigateById('tasks')">
+    ✅
+    <small>المهام</small>
+  </button>
+
+  <button onclick="navigateById('profile')">
+    👤
+    <small>حسابي</small>
+  </button>
+
+</nav>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* ================= DATABASE ================= */
+
+const books = [
+
+  {
+    id:1,
+    title:"كتاب الرياضيات",
+    subject:"رياضيات",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"📐",
+    pdf:""
+  },
+
+  {
+    id:2,
+    title:"كتاب الفيزياء",
+    subject:"فيزياء",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"⚡",
+    pdf:""
+  },
+
+  {
+    id:3,
+    title:"كتاب الكيمياء",
+    subject:"كيمياء",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"🧪",
+    pdf:""
+  },
+
+  {
+    id:4,
+    title:"كتاب اللغة العربية",
+    subject:"لغة عربية",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"📖",
+    pdf:""
+  },
+
+  {
+    id:5,
+    title:"كتاب اللغة الإنجليزية",
+    subject:"لغة إنجليزية",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"🔤",
+    pdf:""
+  },
+
+  {
+    id:6,
+    title:"كتاب الأحياء",
+    subject:"أحياء",
+    system:"الثانوية العامة",
+    grade:"الصف الثالث",
+    icon:"🧬",
+    pdf:""
+  },
+
+  {
+    id:7,
+    title:"رياضيات البكالوريا",
+    subject:"رياضيات",
+    system:"البكالوريا المصرية",
+    grade:"الصف الأول",
+    icon:"📐",
+    pdf:""
+  }
+
+];
+
+
+/* ================= QUOTES ================= */
+
+const quotes = [
+
+  "ابدأ الآن، حتى لو بخطوة صغيرة. 🚀",
+
+  "ال
